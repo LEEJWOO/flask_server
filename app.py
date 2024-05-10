@@ -3,6 +3,9 @@ import db
 import llm
 from toon_crawler import comments_crawler
 import asyncio
+import sys
+sys.path.append('C:\\flask_server\\kit452\\Scripts')
+print(sys.path) #실행 경로 테스트용 임시
 
 app = Flask(__name__)
 
@@ -70,6 +73,17 @@ def one_webtoon():
     result = db.get_one_webtoons(title)
     return result
 
+
+
+#TODO 매개변수 url(titleid), firstep, lastep(크롤러 내부 동작으로 얻어오기) 5/9
+async def run_comments_crawler(titleId, start_episode, end_episode, week_day):
+    try:
+        loop = asyncio.get_running_loop()
+        result = await loop.run_in_executor(None, comments_crawler, titleId, start_episode, end_episode, week_day)
+        return f"Crawling successfully completed. Result: {result}"
+    except Exception as e:
+        return f"An error occurred: {str(e)}", 500
+
 @app.route("/crawler")
 async def crawler():
     titleId = request.args.get('titleId', type=int)  # url로부터 받아올 매개변수 titleId
@@ -79,17 +93,6 @@ async def crawler():
     result = await run_comments_crawler(titleId, start_episode, end_episode, week_day)
     return f"Crawling completed. Result: {result}"
     print(result)
-
-#TODO 매개변수 url(titleid), firstep, lastep(크롤러 내부 동작으로 얻어오기) 5/9
-async def run_comments_crawler(titleId, start_episode, end_episode, week_day):
-    try:
-        loop = asyncio.get_running_loop()
-        result = await loop.run_in_executor(None, comments_crawler, titleId, start_episode, end_episode, week_day)
-        return f"Crawling successfully completed. Result: {result}"
-
-        except Exception as e:
-            return f"An error occurred: {str(e)}", 500
-
 
 #TODO 별점 크롤러도 위와 동일하게 작업 5/9-10
 
