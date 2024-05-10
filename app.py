@@ -1,7 +1,7 @@
 from flask import Flask, request, render_template
 import db
 import llm
-from toon_crawler import main_crawler
+from toon_crawler import comments_crawler
 import asyncio
 
 app = Flask(__name__)
@@ -70,17 +70,30 @@ def one_webtoon():
     result = db.get_one_webtoons(title)
     return result
 
-async def run_main_crawler():
-    loop = asyncio.get_running_loop()
-    result = await loop.run_in_executor(None, main_crawler, 50, 55)
-    return result
-
-#TODO 분석화면 페이지로 넘어가게 만들면서 크롤러는 쓰레딩을 사용해서 백그라운드에서 돌아가도록 수정 필요
 @app.route("/crawler")
 async def crawler():
-    result = await run_main_crawler()
+    titleId = request.args.get('titleId', type=int)  # url로부터 받아올 매개변수 titleId
+    start_episode = request.args.get('startep', type=int)  # url로부터 받아올 매개변수 start_episode (삭제 예정)
+    end_episode = request.args.get('lastep', type=int)  # url로부터 받아올 매개변수 end_episode (최신 회차 = 전체 회차 수)
+    week_day = request.args.get('weekday', default='mon', type=str)  # url로부터 받아올 매개변수 week_day
+    result = await run_comments_crawler(titleId, start_episode, end_episode, week_day)
+    return f"Crawling completed. Result: {result}"
     print(result)
-    return "ok"
+
+#TODO 매개변수 url(titleid), firstep, lastep(크롤러 내부 동작으로 얻어오기) 5/9
+async def run_comments_crawler(titleId, start_episode, end_episode, week_day):
+    try:
+        loop = asyncio.get_running_loop()
+        result = await loop.run_in_executor(None, comments_crawler, titleId, start_episode, end_episode, week_day)
+        return f"Crawling successfully completed. Result: {result}"
+
+        except Exception as e:
+            return f"An error occurred: {str(e)}", 500
+
+
+#TODO 별점 크롤러도 위와 동일하게 작업 5/9-10
+
+#TODO 데이터라벨링을 위한 데이터 수집 5/10-5/11 오전 9시 : 바로 회의록 업로드
 
 #TODO 삭제 내부 동작
 @app.route('/create_label')
