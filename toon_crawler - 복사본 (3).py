@@ -1,3 +1,4 @@
+import time
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
@@ -10,8 +11,6 @@ def setup_driver():
     options = webdriver.ChromeOptions()
     options.add_argument("--headless")
     driver = webdriver.Chrome(options=options)
-    # User-Agent 값을 변경, 크롤링 방지 우회.
-    options.add_argument("user-agent=Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.100 Safari/537.36")
     return driver
 
 def crawl_episode_comments(titleId, episode_number):
@@ -70,25 +69,27 @@ def star_crawler(titleId):
             # 페이지에 별점 요소가 나타날 때까지 대기
             wait.until(EC.presence_of_all_elements_located((By.XPATH, '//div[@class="rating_type"]')))
 
+            # 페이지에 나열된 모든 에피소드에 대해 별점 수집
             for i in range(1, 21):  # 20개 에피소드가 최대
                 try:
-                    episode_xpath = f'/html/body/div[1]/div/div[2]/div/div[1]/div[3]/ul/li[{i}]/a'
-                    episode_link = driver.find_element(By.XPATH, episode_xpath)
+                    link_xpath = f'/html/body/div[1]/div/div[2]/div/div[1]/div[3]/ul/li[{i}]/a'
+                    episode_link = driver.find_element(By.XPATH, link_xpath)
                     episode_number = episode_link.get_attribute('href').split('no=')[1].split('&')[0]
-                    star_rating = driver.find_element(By.XPATH, f'/html/body/div[1]/div/div[2]/div/div[1]/div[3]/ul/li[{i}]/a/div[2]/div/span[1]/span').text
-                    ratings.append(float(star_rating))
-                    last_episode = max(last_episode, int(episode_number))
+                    star_rating = episode_link.find_element(By.XPATH, '../div[2]/div/span[1]/span').text.strip()
+                    if star_rating:
+                        ratings.append(float(star_rating))
+                        last_episode = max(last_episode, int(episode_number))
                 except NoSuchElementException:
-                    break
+                    break  # 에피소드가 20개 미만인 경우 중단
                 except Exception as e:
-                    print(f"Error fetching rating for episode {i} on page {page}: {str(e)}")
+                    print(f"Error fetching rating for episode index {i} on page {page}: {str(e)}")
                     continue
 
-            if len(ratings) < 20 * page:  # 별점 목록이 페이지당 20개 미만이면 마지막 페이지로 간주
+            # 별점 목록이 20개 미만이면 마지막 페이지로 간주
+            if len(ratings) % 20 > 0:
                 break
 
             page += 1  # 다음 페이지로 이동
-
     finally:
         driver.quit()
 
@@ -96,9 +97,6 @@ def star_crawler(titleId):
 
 if __name__ == "__main__":
     title_id = 764480  # 예시 웹툰 ID
-    #ratings, last_episode = star_crawler(title_id) #별점 크롤링시 활성화
-    #print(f"Last crawled episode: {last_episode}") #별점 크롤링시 활성화
-    #print("Ratings:", ratings) #별점 크롤링시 활성화
-
-    comments = comments_crawler(title_id, 50, 52)  # 50화부터 52화까지의 댓글을 크롤링, 댓글 크롤링 테스트시 활성화
-    print("Crawling completed. Comments collected from episodes 50 to 52.") #글 크롤링 테스트시 활성화
+    ratings, last_episode = star_crawler(title_id)
+    print(f"Last crawled episode: {last_episode}")
+    print("Ratings:", ratings)
