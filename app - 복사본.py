@@ -1,9 +1,13 @@
 from flask import Flask, request, render_template, jsonify
 from selenium.common import WebDriverException
+import logging
 import db
 import llm
 from toon_crawler import comments_crawler, star_crawler
 import asyncio
+import sys
+sys.path.append('C:\\flask_server\\kit452\\Scripts')
+print(sys.path) #실행 경로 테스트용 임시
 
 app = Flask(__name__)
 
@@ -74,6 +78,8 @@ def one_webtoon():
 
     return result #url받아서 크롤러로 보내기
 
+
+
 #TODO 매개변수 url(titleid), firstep, lastep(크롤러 내부 동작으로 얻어오기) 5/9
 async def run_comments_crawler(titleId, start_episode, end_episode): # 비동기로 댓글 크롤러 실행
     try:
@@ -113,7 +119,6 @@ async def crawler():
     except Exception as e:
         print(f"An error occurred: {str(e)}")  # 오류를 콘솔에 출력
         return jsonify({"status": "error", "message": str(e)}), 500
-    ##
 
 #TODO 별점 크롤러도 위와 동일하게 작업 5/9-10
 

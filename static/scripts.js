@@ -1,5 +1,13 @@
 /*static/scripts.js*/
 document.addEventListener("DOMContentLoaded", function() {
+    // 홈 버튼에 클릭 이벤트 리스너 추가
+    document.getElementById("homeBtn").addEventListener("click", function() {
+        // index.html로 이동
+        window.location.href = "/";
+    });
+});
+
+document.addEventListener("DOMContentLoaded", function() {
     // 웹툰 추가 버튼에 클릭 이벤트 리스너 추가
     document.getElementById("addComicBtn").addEventListener("click", function() {
         // 팝업을 표시하기 위한 div 요소 생성

@@ -1,4 +1,4 @@
-<!-- analysis.html -->
+<!-- static/analysis.html -->
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -12,13 +12,92 @@
     <header>
         <h1 id="comicTitle">웹툰 제목</h1>
     </header>
+    <nav>
+        <!-- 홈 버튼 -->
+        <div id="homeBtn">홈</div>
+    </nav>
     <main>
         <!-- 분석 내용 표시를 위한 div -->
         <div id="analysisContent">
-            <!-- 여기에 분석 내용이 표시됩니다. -->
+            <!-- 최신 회차의 별점 -->
+            <div class="box" id="latestRating">
+                <h3>최신 회차의 별점</h3>
+                <!-- 별점을 표시하는 요소 -->
+                <div id="starRatingBox">★★★★★</div>
+            </div>
+            
+            <!-- 최신 회차의 베스트 댓글 -->
+            <div class="box" id="bestComment">
+                <h3>최신 회차의 베스트 댓글</h3>
+                <!-- 베스트 댓글을 표시하는 요소 -->
+                <div id="commentBox">
+                    <p>베스트 댓글 내용</p>
+                </div>
+            </div>
+            
+            <!-- 댓글 분석 원그래프 -->
+            <div class="graphbox" id="commentAnalysis">
+                <h3>댓글 반응 분석 원그래프</h3>
+                <canvas id="commentChart" width="200" height="200"></canvas>
+            </div>
+
+            <!-- 별점 분석 -->
+            <div id="별점 분석">
+                <h3>1. 별점 분석</h3>
+                <p id="ratingAnalysisoverview">현재 웹툰에 대한 별점 분석 결과입니다.</p>
+                <div class="section" id="recent10Episodes">
+                    <p>최근 10회차</p>
+                </div>
+                <div class="graphbox" id="recent10EpisodesGraph">
+                    <canvas id="recent10EpisodesGraphCanvas" width="200" height="200"></canvas>
+                </div>
+                <div class="section" id="recent100Episodes">
+                    <p>최근 100회차</p>
+                </div>
+                <div class="graphbox" id="recent100EpisodesGraph">
+                    <canvas id="recent100EpisodesGraphCanvas" width="200" height="200"></canvas>
+                </div>
+                <div class="section" id="overallEpisodes">
+                    <p>전체회차</p>
+                </div>
+                <div class="graphbox" id="overallEpisodesGraph">
+                    <canvas id="overallEpisodesGraphCanvas" width="200" height="200"></canvas>
+                </div>
+            </div>
+
+            <!-- 댓글 분석 -->
+            <div id="댓글 분석">
+                <h3>2. 댓글 분석</h3>
+                <p id="commentAnalysisoverview">현재 웹툰에 대한 댓글 분석 결과입니다.</p>
+                <div class="section" id="feedback">
+                    <p>피드백</p>
+                </div>
+                <div class="textbox" id="feedbackBox"></div>
+                <div class="section" id="overallSummary">
+                    <p>총평</p>
+                </div>
+                <div class="textbox" id="overallSummaryBox"></div>
+            </div>
+
+            <!-- 독자 반응 분석 -->
+            <div id="독자 반응 분석">
+                <h3>3. 독자 반응 분석</h3>
+                <p id="readerReactionAnalysisoverview">현재 웹툰에 대한 독자 반응 분석 결과입니다.</p>
+                <div class="section" id="categories"><p>카테고리</p></div>
+                <div class="graphbox" id="categoriesGraph">
+                    <canvas id="categoriesGraphCanvas" width="200" height="200"></canvas>
+                </div>
+                <div class="section" id="categories"><p>회차별</p></div>
+                <div class="graphbox" id="episodeByEpisodeGraph">
+                    <canvas id="episodeByEpisodeGraphCanvas" width="200" height="200"></canvas>
+                </div>
+            </div>
+            <div id="pdfBtn">PDF로 저장</div>
         </div>
     </main>
+    <!-- Chart.js 라이브러리 스크립트 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
     <!-- 분석 페이지 JavaScript 파일 링크 -->
-    <script src="static/analysis_script.js"></script>
+    <script type="module" src="static/analysis_script.js"></script>
 </body>
 </html>

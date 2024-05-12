@@ -12,9 +12,9 @@ def setup_driver():
     driver = webdriver.Chrome(options=options)
     return driver
 
-def crawl_episode_comments(titleId, episode_number, week_day):
+def crawl_episode_comments(titleId, episode_number):
     driver = setup_driver()
-    episode_url = f'https://comic.naver.com/webtoon/detail?titleId={titleId}&no={episode_number}&week={week_day}'
+    episode_url = f'https://comic.naver.com/webtoon/detail?titleId={titleId}&no={episode_number}'
     driver.get(episode_url)
     wait = WebDriverWait(driver, 10)
 
@@ -29,7 +29,7 @@ def crawl_episode_comments(titleId, episode_number, week_day):
     while True:
         try:
             more_button = wait.until(EC.element_to_be_clickable((By.CLASS_NAME, 'u_cbox_btn_more')))
-            more_button.click()
+            driver.execute_script("arguments[0].click();", more_button)
         except TimeoutException:
             break
 
@@ -37,11 +37,18 @@ def crawl_episode_comments(titleId, episode_number, week_day):
     comments.extend([comment.text for comment in page_comments])
     driver.quit()
 
+    comments_folder = os.path.join(os.getcwd(), 'Webtoon_Comments') # 저장 코드
+    os.makedirs(comments_folder, exist_ok=True)
+    comment_filename = os.path.join(comments_folder, f'{episode_number}_comments.txt')
+    with open(comment_filename, 'w', encoding='utf-8') as file:
+        for comment in comments:
+            file.write(comment + "\n")
+
     return comments
 
-def comments_crawler(titleId, start_episode, end_episode, week_day):
+def comments_crawler(titleId, start_episode, end_episode):
     comments = []
     for episode_number in range(start_episode, end_episode + 1):
-        episode_comments = crawl_episode_comments(titleId, episode_number, week_day)
+        episode_comments = crawl_episode_comments(titleId, episode_number)
         comments.extend(episode_comments)
     return comments
