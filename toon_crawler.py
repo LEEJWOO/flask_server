@@ -62,48 +62,42 @@ def star_crawler(titleId):
     driver = setup_driver()
     ratings = []
     page = 1
-    last_episode = 0  # 마지막 회차 번호를 추적하기 위한 변수
+    last_episode = 0
 
     try:
         while True:
             base_url = f'https://comic.naver.com/webtoon/list?titleId={titleId}&page={page}&sort=DESC'
             driver.get(base_url)
-            time.sleep(0.1)  # 페이지 로드를 보장하기 위해 잠시 대기 (동적 대기로 변경 예정)
+            wait = WebDriverWait(driver, 10)
 
-            current_page_ratings = []
-            episodes = driver.find_elements(By.XPATH, '/html/body/div[1]/div/div[2]/div/div[1]/div[3]/ul/li/div/a')
-            for episode in episodes:
-                episode_number = int(episode.get_attribute('href').split('no=')[1].split('&')[0])
+            # 페이지에 별점 요소가 나타날 때까지 대기
+            wait.until(EC.presence_of_all_elements_located((By.CSS_SELECTOR,'#content > div.EpisodeListView__episode_list_wrap--q0VYg > ul > li > a > div.EpisodeListList__info_area--Rq03U > div > span.Rating__star_area--dFzsb > span')))
+
+            # 페이지에 나열된 모든 에피소드에 대해 별점 수집
+            for i in range(1, 21):  # 20개 에피소드가 최대
                 try:
-                    xpath = f'/html/body/div[1]/div/div[2]/div/div[1]/div[3]/ul/li[{episode_number}]/a/div[2]/div/span[1]/span'
-                    star_rating = driver.find_element(By.XPATH, xpath).text
+                    star_selector = f'#content > div.EpisodeListView__episode_list_wrap--q0VYg > ul > li:nth-child({i}) > a > div.EpisodeListList__info_area--Rq03U > div > span.Rating__star_area--dFzsb > span'
+                    star_rating = driver.find_element(By.CSS_SELECTOR, star_selector).text.strip()
                     if star_rating:
-                        current_page_ratings.append(float(star_rating))
-                        last_episode = max(last_episode, episode_number)
+                        ratings.append(float(star_rating))
+                except NoSuchElementException:
+                    break  # 에피소드가 20개 미만인 경우 중단
                 except Exception as e:
-                    print(f"Error fetching rating for episode {episode_number}: {str(e)}")
+                    print(f"Error fetching rating for episode index {i} on page {page}: {str(e)}")
                     continue
 
-            if len(current_page_ratings) < 20:  # 20개 미만이면 마지막 페이지로 간주, 루프 종료
-                ratings.extend(current_page_ratings)
+            # 현재 페이지의 마지막 에피소드 번호 확인
+            episode_numbers = driver.find_elements(By.CSS_SELECTOR,'#content > div.EpisodeListView__episode_list_wrap--q0VYg > ul > li > a')
+            if episode_numbers:
+                last_episode = int(episode_numbers[-1].get_attribute('href').split('no=')[1])
+
+            # 별점 목록이 20개 미만이면 마지막 페이지로 간주
+            if len(episode_numbers) < 20:
                 break
 
-            ratings.extend(current_page_ratings)
-            page += 1  # 다음 페이지로 넘어가기
-
+            page += 1  # 다음 페이지로 이동
     finally:
         driver.quit()
-
-    ratings.reverse()# 데이터를 역순으로 정렬하여 1화부터 마지막 화까지 순서대로 배열
-
-    # 결과를 파일에 저장
-    results_folder = os.path.join(os.getcwd(), 'Webtoon_Ratings')
-    os.makedirs(results_folder, exist_ok=True)
-    ratings_file_path = os.path.join(results_folder, f'{titleId}_ratings.txt')
-    with open(ratings_file_path, 'w', encoding='utf-8') as file:
-        for episode, rating in enumerate(ratings, 1):
-            file.write(f'{episode}, {rating}\n')
-            print(f'{episode}, {rating}')  # 콘솔에 출력
 
     return ratings, last_episode
 

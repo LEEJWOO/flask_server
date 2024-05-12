@@ -96,6 +96,7 @@ async def run_star_crawler(title_id): # 비동기로 별점 크롤러 실행
         print(f"An unexpected error occurred: {str(e)}")
         return jsonify({"status": "error", "message": str(e)}), 500
 
+
 @app.route("/crawler")
 async def crawler():
     title_id = request.args.get('titleId', default=764480, type=int)  # titleId를 URL 파라미터로 받음
