@@ -38,7 +38,8 @@ def crawl_episode_comments(titleId, episode_number):
     page_comments = driver.find_elements(By.CLASS_NAME, 'u_cbox_contents')
     comments.extend([comment.text for comment in page_comments])
     driver.quit()
-
+    
+    # 크롤러 : Webtoon_titleID폴더 → 파일명 : comments_titleid_episodeno, 
     results_folder = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'Webtoon_Comments') #폴더에 저장하는 코드
     os.makedirs(results_folder, exist_ok=True)
     comment_filename = os.path.join(results_folder, f'{episode_number}_comments.txt')
@@ -55,6 +56,8 @@ def comments_crawler(titleId, start_episode, end_episode):
         comments.extend(episode_comments)
     return comments
 
+# 파일명 : star_titleid (star 콜렉션에 star_list 저장), 현재 저장 코드 없음
+# def create_stars(s_list)를 여기서 불러오거나 Usecase 코드에서 불러와서 DB에 저장하는 코드 추가
 def star_crawler(titleId):
     driver = setup_driver()
     ratings = []
@@ -94,6 +97,9 @@ def star_crawler(titleId):
 
     return ratings, last_episode
 
+# main 삭제하고, server에서 직접 실행 테스트 
+# server에서 테스트 후에는 Useacase 코드에서 테스트 바람
+# Usecase 코드가 필요하다면 김수빈에게 요청
 if __name__ == "__main__":
     title_id = 764480  # 예시 웹툰 ID
     #ratings, last_episode = star_crawler(title_id) #별점 크롤링시 활성화
