@@ -3,7 +3,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import TimeoutException, NoSuchElementException
-
+import time
 import os
 
 def setup_driver():
@@ -68,11 +68,8 @@ def star_crawler(titleId):
         while True:
             base_url = f'https://comic.naver.com/webtoon/list?titleId={titleId}&page={page}&sort=DESC'
             driver.get(base_url)
-            wait = WebDriverWait(driver, 10)
-
-            # 페이지에 별점 요소가 나타날 때까지 대기
-            wait.until(EC.presence_of_all_elements_located((By.XPATH, '//div[@class="rating_type"]')))
-
+            time.sleep(0.01)
+            
             for i in range(1, 21):  # 20개 에피소드가 최대
                 try:
                     episode_xpath = f'/html/body/div[1]/div/div[2]/div/div[1]/div[3]/ul/li[{i}]/a'
