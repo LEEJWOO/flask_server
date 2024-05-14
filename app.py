@@ -142,7 +142,7 @@ def create_label():
 
     return record
 
-#TODO 삭제 내부 동작
+# create_stars 동작은 실제로 아래와 같습니다. 현재 업데이트 코드 어떻게 수정할 지 다시 생각 바람
 @app.route('/create_stars')
 def create_stars():
 
