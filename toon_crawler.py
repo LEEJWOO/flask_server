@@ -68,16 +68,16 @@ def star_crawler(titleId):
         while True:
             base_url = f'https://comic.naver.com/webtoon/list?titleId={titleId}&page={page}&sort=DESC'
             driver.get(base_url)
-            time.sleep(0.01)
-            
+            time.sleep(0.1)  # 페이지 로딩 대기
+
             for i in range(1, 21):  # 20개 에피소드가 최대
                 try:
                     episode_xpath = f'/html/body/div[1]/div/div[2]/div/div[1]/div[3]/ul/li[{i}]/a'
                     episode_link = driver.find_element(By.XPATH, episode_xpath)
-                    episode_number = episode_link.get_attribute('href').split('no=')[1].split('&')[0]
+                    episode_number = int(episode_link.get_attribute('href').split('no=')[1].split('&')[0])
                     star_rating = driver.find_element(By.XPATH, f'/html/body/div[1]/div/div[2]/div/div[1]/div[3]/ul/li[{i}]/a/div[2]/div/span[1]/span').text
-                    ratings.append(float(star_rating))
-                    last_episode = max(last_episode, int(episode_number))
+                    ratings.append({'episode': episode_number, 'star': float(star_rating)})
+                    last_episode = max(last_episode, episode_number)
                 except NoSuchElementException:
                     break
                 except Exception as e:
@@ -92,16 +92,24 @@ def star_crawler(titleId):
     finally:
         driver.quit()
 
+    # 별점 데이터 저장
+    results_folder = os.path.join(os.path.dirname(os.path.abspath(__file__)), f'Webtoon_{titleId}_Ratings')
+    os.makedirs(results_folder, exist_ok=True)
+    ratings_file_path = os.path.join(results_folder, f'{last_episode}_ratings.txt')
+    with open(ratings_file_path, 'w', encoding='utf-8') as file:
+        for rating in ratings:
+            file.write(f"Episode {rating['episode']}: {rating['star']}\n")
+
     return ratings, last_episode
 
 # main 삭제하고, server에서 직접 실행 테스트 
 # server에서 테스트 후에는 Useacase 코드에서 테스트 바람
 # Usecase 코드가 필요하다면 김수빈에게 요청
-if __name__ == "__main__":
+if __name__ == "__main__": ##?
     title_id = 764480  # 예시 웹툰 ID
-    #ratings, last_episode = star_crawler(title_id) #별점 크롤링시 활성화
-    #print(f"Last crawled episode: {last_episode}") #별점 크롤링시 활성화
-    #print("Ratings:", ratings) #별점 크롤링시 활성화
+    ratings, last_episode = star_crawler(title_id) #별점 크롤링시 활성화
+    print(f"Last crawled episode: {last_episode}") #별점 크롤링시 활성화
+    print("Ratings:", ratings) #별점 크롤링시 활성화
 
-    comments = comments_crawler(title_id, 50, 52)  # 50화부터 52화까지의 댓글을 크롤링, 댓글 크롤링 테스트시 활성화
-    print("Crawling completed. Comments collected from episodes 50 to 52.") #글 크롤링 테스트시 활성화
+    #comments = comments_crawler(title_id, 50, 52)  # 50화부터 52화까지의 댓글을 크롤링, 댓글 크롤링 테스트시 활성화
+    #print("Crawling completed. Comments collected from episodes 50 to 52.") #댓글 크롤링 테스트시 활성화

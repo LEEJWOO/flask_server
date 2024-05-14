@@ -140,6 +140,14 @@ def update_label_webtoon():
     record = pb.collection('webtoons').update('kskm56pt3jkjjp6', data)
     print(record.__dict__)
     return record.label
+"""
+#0514 임시 수정
+def update_label_webtoon(titleId, label_data):
+    data = {"label": label_data}
+    record = pb.collection('webtoons').update(titleId, data)
+    print(record.__dict__)
+    return record.label
+"""
 
 #TODO 하드코딩된 값들 교체해야 함
 def update_stars_webtoon():
@@ -148,9 +156,30 @@ def update_stars_webtoon():
     }
     record = pb.collection('webtoons').update('kskm56pt3jkjjp6', data)
     print(record.__dict__)
+    return record.star
+"""
+#0514 임시 수정
+def update_stars_webtoon(titleId, stars_data):
+    data = {"stars": stars_data}
+    record = pb.collection('webtoons').update(titleId, data)
+    print(record.__dict__)
     return record.stars
+"""
 
 
 def delete_webtoon(id):
     pb.collection('webtoons').delete(id)
     return "delete 성공"
+def update_webtoon_stars(titleId, stars_data):
+    data = {"stars": stars_data}
+    record = pb.collection('webtoons').update(titleId, data)
+    return record
+
+def update_webtoon_label(titleId, label_data):
+    data = {"label": label_data}
+    record = pb.collection('webtoons').update(titleId, data)
+    return record
+
+#0513 app.py save_comments_data 때문에 필요
+def create_comments(param): #미완
+    return None

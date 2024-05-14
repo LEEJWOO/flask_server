@@ -83,6 +83,16 @@ async def run_comments_crawler(titleId, start_episode, end_episode): # 비동기
     except Exception as e:
         return f"An error occurred: {str(e)}", 500
 
+def save_comments_data(titleId, episode_number, comments):
+    # 데이터베이스에 저장하는 코드
+    db.create_comments({
+        'titleId': titleId,
+        'episode_number': episode_number,
+        'comments': comments
+    })
+    print(f"Saved comments for title ID {titleId}, Episode {episode_number}")
+
+
 async def run_star_crawler(title_id): # 비동기로 별점 크롤러 실행
     try:
         loop = asyncio.get_running_loop()
@@ -95,7 +105,13 @@ async def run_star_crawler(title_id): # 비동기로 별점 크롤러 실행
     except Exception as e:
         print(f"An unexpected error occurred: {str(e)}")
         return jsonify({"status": "error", "message": str(e)}), 500
-
+def save_star_data(titleId, ratings):
+    # 예시: 데이터베이스에 저장하는 코드
+    db.create_stars({
+        'titleId': titleId,
+        'ratings': ratings
+    })
+    print(f"Saved star data for title ID {titleId}")
 
 @app.route("/crawler")
 async def crawler():
