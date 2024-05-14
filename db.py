@@ -76,6 +76,8 @@ def get_all_webtoons():
 
     return webtoons
 
+# 확장 콜렉션까지 출력하도록 수정
+# 실행 확인 완료
 def get_one_webtoons(tit):
     query_params = {
         "expand": "label,stars,total_count"
@@ -85,21 +87,48 @@ def get_one_webtoons(tit):
     toon_list = get_all_webtoons()
     for toon in toon_list:
         if toon['title'] == title:
-            print(toon['id'])
             recordID = toon['id']
             break
 
     record = pb.collection('webtoons').get_one(recordID, query_params)
+
+    labels = []
+    if 'label' in record.expand and record.expand['label']:
+        for label_record in record.expand['label']:
+            label = {
+                "id": label_record.id,
+                "positive_count": label_record.positive_count,
+                "positive_summary": label_record.positive_summary,
+            }
+            labels.append(label)
+
+    if 'stars' in record.expand and record.expand['stars']:
+        stars = {
+            "id": record.expand['stars'].id,
+            "star_list": record.expand['stars'].star_list
+        }
+    else:
+        stars = None
+
+    if 'total_count' in record.expand and record.expand['total_count']:
+        total_count = {
+            "id": record.expand['total_count'].id,
+            "total_p": record.expand['total_count'].total_p,
+            "total_n": record.expand['total_count'].total_n
+        }
+    else:
+        total_count = None
+
     webtoon = {
         "id": record.id,
         "collectionId": record.collection_id,
         "collectionName": record.collection_name,
         "title": record.title,
         "url": record.url,
-        "label": record.label,
         "last_ep": record.last_ep,
-        "stars": record.stars,
-        "total_count": record.total_count
+        "label": labels,
+        "stars": stars,
+        "total_count": total_count
     }
 
     return webtoon
