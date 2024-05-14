@@ -119,7 +119,7 @@ async def crawler():
     try:
         loop = asyncio.get_running_loop()
         ratings, last_episode = await loop.run_in_executor(None, star_crawler, title_id)
-        print(f"Crawling completed. Last episode: {last_episode}, Ratings: {ratings}")  # 결과를 콘솔에 출력
+        print(f"Crawling completed. Last episode: {last_episode}, Ratings: {ratings}") #정상 실행시 콘솔에 출력
         return jsonify({
             "status": "success",
             "data": {
@@ -128,13 +128,8 @@ async def crawler():
             }
         })
     except Exception as e:
-        print(f"An error occurred: {str(e)}")  # 오류를 콘솔에 출력
-        return jsonify({"status": "error", "message": str(e)}), 500
-    ##
-
-#TODO 별점 크롤러도 위와 동일하게 작업 5/9-10
-
-#TODO 데이터라벨링을 위한 데이터 수집 5/10-5/11 오전 9시 : 바로 회의록 업로드
+        print(f"An error occurred: {str(e)}")
+        return jsonify({"status": "error", "message": str(e)}), 500 #오류시 콘솔에 출력
 
 #TODO 삭제 내부 동작
 @app.route('/create_label')
