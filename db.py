@@ -1,6 +1,7 @@
 from pocketbase import PocketBase
 
 pb = PocketBase('http://127.0.0.1:8090')
+# titleID는 실제 DB에서 쓰이지 않음!! 추가 XXXX, DB 임의 변경 절대 XX, 다른 코드에 오류 발생할 가능성 많음!!
 
 def get_webtoons():
     records = pb.collection('webtoons').get_full_list()
@@ -150,6 +151,7 @@ def create_label(label, p_count, p_summary):
     record = pb.collection('label_webtoon').create(data)
     return record.label
 
+# 이 코드 사용해서 별점 레코드 생성하고, star_list가 아닌 id값 받아오기
 def create_stars(s_list):
     data = {
         "star_list": s_list
@@ -169,14 +171,6 @@ def update_label_webtoon():
     record = pb.collection('webtoons').update('kskm56pt3jkjjp6', data)
     print(record.__dict__)
     return record.label
-"""
-#0514 임시 수정
-def update_label_webtoon(titleId, label_data):
-    data = {"label": label_data}
-    record = pb.collection('webtoons').update(titleId, data)
-    print(record.__dict__)
-    return record.label
-"""
 
 #TODO 하드코딩된 값들 교체해야 함
 def update_stars_webtoon():
@@ -186,14 +180,6 @@ def update_stars_webtoon():
     record = pb.collection('webtoons').update('kskm56pt3jkjjp6', data)
     print(record.__dict__)
     return record.star
-"""
-#0514 임시 수정
-def update_stars_webtoon(titleId, stars_data):
-    data = {"stars": stars_data}
-    record = pb.collection('webtoons').update(titleId, data)
-    print(record.__dict__)
-    return record.stars
-"""
 
 
 def delete_webtoon(id):
