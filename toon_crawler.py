@@ -59,8 +59,9 @@ comments_folder = os.path.join(os.getcwd(), 'Webtoon_824261')
 '''
 
 # TODO 매개변수 변경 (url)
-def comments_crawler(titleId, start_episode, end_episode):
+def comments_crawler(titleId, end_episode):
     comments = []
+    start_episode=1
     for episode_number in range(start_episode, end_episode + 1):
         episode_comments = crawl_episode_comments(titleId, episode_number)
         comments.extend(episode_comments)
@@ -76,7 +77,7 @@ def star_crawler(titleId): #크롤링 완료시 바로 star콜렉션에 JSON형�
         while True:
             base_url = f'https://comic.naver.com/webtoon/list?titleId={titleId}&page={page}&sort=DESC'
             driver.get(base_url)
-            time.sleep(0.01)  # 페이지 로딩 대기, 삭제 또는 변경 가능성 있음
+            time.sleep(0.02)  # 페이지 로딩 대기, 삭제 또는 변경 가능성 있음
 
             for i in range(1, 21):  # 한 페이지에 20개의 에피소드 가정
                 try:
@@ -106,14 +107,14 @@ def star_crawler(titleId): #크롤링 완료시 바로 star콜렉션에 JSON형�
             file.write(f"Episode {rating['episode']}: {rating['star']}\n")
 
     # TODO def create_stars(s_list) <- 매개변수를 너무나도 잘못이해..., 다시 확인 바람. db 코드에는 return값이 id가 아니므로 이 부분은 변경해도 됨.
-    record_id = db.create_stars({'titleId': titleId, 'ratings': ratings})
+    record_id = db.create_stars(ratings)  # db.create_stars에 전달되는 데이터 형식 수정
     return record_id, last_episode
 
 if __name__ == "__main__":  ##usecase 에서 실행 할 수 있도록 수정 예정!
     title_id = 764480  # 예시 웹툰 ID
-    ratings, last_episode = star_crawler(title_id)  # 별점 크롤링시 활성화
+    record_id, last_episode = star_crawler(title_id)  # 별점 크롤링시 활성화
     print(f"Last crawled episode: {last_episode}")  # 별점 크롤링시 활성화
-    print("Ratings:", ratings)  # 별점 크롤링시 활성화
+    print("record_id:", record_id)  # 별점 크롤링시 활성화
 
-    #comments = comments_crawler(title_id, 50, 52)  # 50화부터 52화까지의 댓글을 크롤링, 댓글 크롤링 테스트시 활성화
-    #print("Crawling completed. Comments collected from episodes 50 to 52.") #댓글 크롤링 테스트시 활성화
+    comments = comments_crawler(title_id, last_episode)  # 50화부터 52화까지의 댓글을 크롤링, 댓글 크롤링 테스트시 활성화
+    print("Crawling completed. Comments collected from episodes 50 to 52.") #댓글 크롤링 테스트시 활성화
