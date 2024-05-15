@@ -75,61 +75,6 @@ def one_webtoon():
     return result #url받아서 크롤러로 보내기
 
 #TODO 매개변수 url(titleid), firstep, lastep(크롤러 내부 동작으로 얻어오기) 5/9
-async def run_comments_crawler(titleId, start_episode, end_episode): # 비동기로 댓글 크롤러 실행
-    try:
-        loop = asyncio.get_running_loop()
-        result = await loop.run_in_executor(None, comments_crawler, titleId, start_episode, end_episode)
-        return f"Crawling successfully completed. Result: {result}"
-    except Exception as e:
-        return f"An error occurred: {str(e)}", 500
-
-def save_comments_data(titleId, episode_number, comments):
-    # 데이터베이스에 저장하는 코드
-    db.create_comments({
-        'titleId': titleId,
-        'episode_number': episode_number,
-        'comments': comments
-    })
-    print(f"Saved comments for title ID {titleId}, Episode {episode_number}")
-
-
-async def run_star_crawler(title_id): # 비동기로 별점 크롤러 실행
-    try:
-        loop = asyncio.get_running_loop()
-        ratings, last_episode = await loop.run_in_executor(None, star_crawler, title_id)
-        print(f"Star crawling completed. Last episode: {last_episode}, Ratings: {ratings}")
-        return ratings, last_episode
-    except WebDriverException as e:
-        print(f"Selenium WebDriver error occurred: {e}")
-        return jsonify({"status": "error", "message": str(e)}), 500
-    except Exception as e:
-        print(f"An unexpected error occurred: {str(e)}")
-        return jsonify({"status": "error", "message": str(e)}), 500
-def save_star_data(titleId, ratings):
-    # 예시: 데이터베이스에 저장하는 코드
-    db.create_stars({
-        'titleId': titleId,
-        'ratings': ratings
-    })
-    print(f"Saved star data for title ID {titleId}")
-
-@app.route("/crawler")
-async def crawler():
-    title_id = request.args.get('titleId', default=764480, type=int)  # titleId를 URL 파라미터로 받음
-    try:
-        loop = asyncio.get_running_loop()
-        ratings, last_episode = await loop.run_in_executor(None, star_crawler, title_id)
-        print(f"Crawling completed. Last episode: {last_episode}, Ratings: {ratings}") #정상 실행시 콘솔에 출력
-        return jsonify({
-            "status": "success",
-            "data": {
-                "last_episode": last_episode,
-                "ratings": ratings
-            }
-        })
-    except Exception as e:
-        print(f"An error occurred: {str(e)}")
-        return jsonify({"status": "error", "message": str(e)}), 500 #오류시 콘솔에 출력
 
 #TODO 삭제 내부 동작
 @app.route('/create_label')

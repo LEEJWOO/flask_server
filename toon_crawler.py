@@ -5,7 +5,6 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import TimeoutException, NoSuchElementException
 import time
 import os
-
 import db
 
 
@@ -44,14 +43,20 @@ def crawl_episode_comments(titleId, episode_number):
     driver.quit()
 
     # TODO 크롤러 : Webtoon_titleID폴더 → 파일명 : comments_titleid_episodeno 변경!!
-    results_folder = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'Webtoon_Comments')  # 폴더에 저장하는 코드
-    os.makedirs(results_folder, exist_ok=True)
-    comment_filename = os.path.join(results_folder, f'{episode_number}_comments.txt')
+    comments_folder = os.path.join(os.getcwd(), f'Webtoon_{titleId}')  # 폴더에 저장하는 코드
+    os.makedirs(comments_folder, exist_ok=True)
+    comment_filename = os.path.join(comments_folder, f'comments_{titleId}_{episode_number}.txt')
     with open(comment_filename, 'w', encoding='utf-8') as file:
         for comment in comments:
             file.write(comment + "\n")
 
     return comments
+'''
+comments_folder = os.path.join(os.getcwd(), 'Webtoon_824261')
+    os.makedirs(comments_folder, exist_ok=True)
+    comment_filename = os.path.join(comments_folder, f'comments_824261_{episode_number}.txt')
+
+'''
 
 # TODO 매개변수 변경 (url)
 def comments_crawler(titleId, start_episode, end_episode):
@@ -62,7 +67,7 @@ def comments_crawler(titleId, start_episode, end_episode):
     return comments
 
 # TODO 매개변수 변경 (url)
-def star_crawler(titleId):
+def star_crawler(titleId): #크롤링 완료시 바로 star콜렉션에 JSON형태로 저장 후 starid 를 웹툰 콜렉션에 저장
     driver = setup_driver()
     ratings = []
     page = 1
@@ -70,9 +75,9 @@ def star_crawler(titleId):
     try:
         while True:
             base_url = f'https://comic.naver.com/webtoon/list?titleId={titleId}&page={page}&sort=DESC'
+            driver.get(base_url)
             time.sleep(0.01)  # 페이지 로딩 대기, 삭제 또는 변경 가능성 있음
 
-            driver.get(base_url)
             for i in range(1, 21):  # 한 페이지에 20개의 에피소드 가정
                 try:
                     episode_xpath = f'/html/body/div[1]/div/div[2]/div/div[1]/div[3]/ul/li[{i}]/a'
@@ -104,3 +109,11 @@ def star_crawler(titleId):
     record_id = db.create_stars({'titleId': titleId, 'ratings': ratings})
     return record_id, last_episode
 
+if __name__ == "__main__":  ##usecase 에서 실행 할 수 있도록 수정 예정!
+    title_id = 764480  # 예시 웹툰 ID
+    ratings, last_episode = star_crawler(title_id)  # 별점 크롤링시 활성화
+    print(f"Last crawled episode: {last_episode}")  # 별점 크롤링시 활성화
+    print("Ratings:", ratings)  # 별점 크롤링시 활성화
+
+    #comments = comments_crawler(title_id, 50, 52)  # 50화부터 52화까지의 댓글을 크롤링, 댓글 크롤링 테스트시 활성화
+    #print("Crawling completed. Comments collected from episodes 50 to 52.") #댓글 크롤링 테스트시 활성화

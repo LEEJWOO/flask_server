@@ -157,7 +157,14 @@ def create_stars(s_list):
         "star_list": s_list
     }
     record = pb.collection('stars_webtoon').create(data)
-    return record.star_list
+    return record.id
+def update_stars_webtoon(webtoon_id, star_id):
+    data = {
+        "stars": star_id,
+    }
+    record = pb.collection('webtoons').update(webtoon_id, data)
+    print(record.__dict__)
+    return record.stars
 
 #TODO 하드코딩된 값들 교체해야 함
 def update_label_webtoon():
