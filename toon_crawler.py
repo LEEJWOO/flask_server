@@ -43,7 +43,7 @@ def crawl_episode_comments(titleId, episode_number):
     comments.extend([comment.text for comment in page_comments])
     driver.quit()
 
-    # 크롤러 : Webtoon_titleID폴더 → 파일명 : comments_titleid_episodeno,
+    # TODO 크롤러 : Webtoon_titleID폴더 → 파일명 : comments_titleid_episodeno 변경!!
     results_folder = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'Webtoon_Comments')  # 폴더에 저장하는 코드
     os.makedirs(results_folder, exist_ok=True)
     comment_filename = os.path.join(results_folder, f'{episode_number}_comments.txt')
@@ -53,7 +53,7 @@ def crawl_episode_comments(titleId, episode_number):
 
     return comments
 
-
+# TODO 매개변수 변경 (url)
 def comments_crawler(titleId, start_episode, end_episode):
     comments = []
     for episode_number in range(start_episode, end_episode + 1):
@@ -61,9 +61,7 @@ def comments_crawler(titleId, start_episode, end_episode):
         comments.extend(episode_comments)
     return comments
 
-
-# 파일명 : star_titleid (star 콜렉션에 star_list 저장), 현재 저장 코드 없음
-# def create_stars(s_list)를 여기서 불러오거나 Usecase 코드에서 불러와서 DB에 저장하는 코드 추가
+# TODO 매개변수 변경 (url)
 def star_crawler(titleId):
     driver = setup_driver()
     ratings = []
@@ -102,18 +100,7 @@ def star_crawler(titleId):
         for rating in ratings:
             file.write(f"Episode {rating['episode']}: {rating['star']}\n")
 
-    # 데이터베이스에 저장하는 코드
+    # TODO def create_stars(s_list) <- 매개변수를 너무나도 잘못이해..., 다시 확인 바람. db 코드에는 return값이 id가 아니므로 이 부분은 변경해도 됨.
     record_id = db.create_stars({'titleId': titleId, 'ratings': ratings})
     return record_id, last_episode
 
-# 0514: main 삭제하고, server에서 직접 실행 테스트
-# server에서 테스트 후에는 Useacase 코드에서 테스트 바람
-# Usecase 코드가 필요하다면 김수빈에게 요청
-if __name__ == "__main__":  ##usecase 에서 실행 할 수 있도록 수정 예정!
-    title_id = 764480  # 예시 웹툰 ID
-    ratings, last_episode = star_crawler(title_id)  # 별점 크롤링시 활성화
-    print(f"Last crawled episode: {last_episode}")  # 별점 크롤링시 활성화
-    print("Ratings:", ratings)  # 별점 크롤링시 활성화
-
-    # comments = comments_crawler(title_id, 50, 52)  # 50화부터 52화까지의 댓글을 크롤링, 댓글 크롤링 테스트시 활성화
-    # print("Crawling completed. Comments collected from episodes 50 to 52.") #댓글 크롤링 테스트시 활성화
