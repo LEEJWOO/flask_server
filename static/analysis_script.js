@@ -231,6 +231,12 @@ function drawAllLineChart(labels, values) {
       options: {
           responsive: true,
           maintainAspectRatio: false,
+          scales: {
+            y: {
+                min: 1, // 세로축의 최소값 설정
+                max: 10, // 세로축의 최대값 설정
+            }
+        }
       },
   });
 }

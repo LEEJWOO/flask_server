@@ -13,7 +13,8 @@ def setup_driver():
     options.add_argument("--headless")
     driver = webdriver.Chrome(options=options)
     # User-Agent 값을 변경, 크롤링 방지 우회.
-    options.add_argument("user-agent=Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.100 Safari/537.36")
+    options.add_argument(
+        "user-agent=Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.100 Safari/537.36")
     return webdriver.Chrome(options=options)
 
 
@@ -42,7 +43,6 @@ def crawl_episode_comments(titleId, episode_number):
     comments.extend([comment.text for comment in page_comments])
     driver.quit()
 
-    # TODO 크롤러 : Webtoon_titleID폴더 → 파일명 : comments_titleid_episodeno 변경!!
     comments_folder = os.path.join(os.getcwd(), f'Webtoon_{titleId}')  # 폴더에 저장하는 코드
     os.makedirs(comments_folder, exist_ok=True)
     comment_filename = os.path.join(comments_folder, f'comments_{titleId}_{episode_number}.txt')
@@ -51,24 +51,18 @@ def crawl_episode_comments(titleId, episode_number):
             file.write(comment + "\n")
 
     return comments
-'''
-comments_folder = os.path.join(os.getcwd(), 'Webtoon_824261')
-    os.makedirs(comments_folder, exist_ok=True)
-    comment_filename = os.path.join(comments_folder, f'comments_824261_{episode_number}.txt')
 
-'''
 
-# TODO 매개변수 변경 (url)
 def comments_crawler(titleId, end_episode):
     comments = []
-    start_episode=1
+    start_episode = 1
     for episode_number in range(start_episode, end_episode + 1):
         episode_comments = crawl_episode_comments(titleId, episode_number)
         comments.extend(episode_comments)
     return comments
 
-# TODO 매개변수 변경 (url)
-def star_crawler(titleId): #크롤링 완료시 바로 star콜렉션에 JSON형태로 저장 후 starid 를 웹툰 콜렉션에 저장
+
+def star_crawler(titleId):
     driver = setup_driver()
     ratings = []
     page = 1
@@ -77,9 +71,9 @@ def star_crawler(titleId): #크롤링 완료시 바로 star콜렉션에 JSON형�
         while True:
             base_url = f'https://comic.naver.com/webtoon/list?titleId={titleId}&page={page}&sort=DESC'
             driver.get(base_url)
-            time.sleep(0.02)  # 페이지 로딩 대기, 삭제 또는 변경 가능성 있음
+            time.sleep(0.02)
 
-            for i in range(1, 21):  # 한 페이지에 20개의 에피소드 가정
+            for i in range(1, 21):
                 try:
                     episode_xpath = f'/html/body/div[1]/div/div[2]/div/div[1]/div[3]/ul/li[{i}]/a'
                     episode_link = driver.find_element(By.XPATH, episode_xpath)
@@ -106,15 +100,5 @@ def star_crawler(titleId): #크롤링 완료시 바로 star콜렉션에 JSON형�
         for rating in ratings:
             file.write(f"Episode {rating['episode']}: {rating['star']}\n")
 
-    # TODO def create_stars(s_list) <- 매개변수를 너무나도 잘못이해..., 다시 확인 바람. db 코드에는 return값이 id가 아니므로 이 부분은 변경해도 됨.
-    record_id = db.create_stars(ratings)  # db.create_stars에 전달되는 데이터 형식 수정
+    record_id = db.create_stars(ratings)
     return record_id, last_episode
-
-if __name__ == "__main__":  ##usecase 에서 실행 할 수 있도록 수정 예정!
-    title_id = 764480  # 예시 웹툰 ID
-    record_id, last_episode = star_crawler(title_id)  # 별점 크롤링시 활성화
-    print(f"Last crawled episode: {last_episode}")  # 별점 크롤링시 활성화
-    print("record_id:", record_id)  # 별점 크롤링시 활성화
-
-    comments = comments_crawler(title_id, last_episode)  # 50화부터 52화까지의 댓글을 크롤링, 댓글 크롤링 테스트시 활성화
-    print("Crawling completed. Comments collected from episodes 50 to 52.") #댓글 크롤링 테스트시 활성화

@@ -1,4 +1,4 @@
-<!-- static/analysis.html -->
+<!-- templates/analysis.html -->
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -6,8 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>웹툰 분석 페이지</title>
     <!-- 분석 페이지 CSS 링크 -->
-    <link rel="stylesheet" href="static/analysis_styles.css">
-</head>
+    <link id="styleLink" rel="stylesheet" href="../static/analysis_styles.css">
+    </head>
 <body>
     <header>
         <h1 id="comicTitle">웹툰 제목</h1>
@@ -19,21 +19,24 @@
     <main>
         <!-- 분석 내용 표시를 위한 div -->
         <div id="analysisContent">
-            <!-- 최신 회차의 별점 -->
-            <div class="box" id="latestRating">
-                <h3>최신 회차의 별점</h3>
-                <!-- 별점을 표시하는 요소 -->
-                <div id="starRatingBox">★★★★★</div>
-            </div>
+            <div id="container">
+                <!-- 최신 회차의 별점 -->
+                <div class="box" id="latestRating">
+                    <h3>최신 회차의 별점</h3>
+                    <!-- 별점을 표시하는 요소 -->
+                    <div id="starRatingBox">★★★★★</div>
+                </div>
             
-            <!-- 최신 회차의 베스트 댓글 -->
-            <div class="box" id="bestComment">
-                <h3>최신 회차의 베스트 댓글</h3>
-                <!-- 베스트 댓글을 표시하는 요소 -->
-                <div id="commentBox">
-                    <p>베스트 댓글 내용</p>
+                <!-- 최신 회차의 베스트 댓글 -->
+                <div class="box" id="bestComment">
+                    <h3>최신 회차의 베스트 댓글</h3>
+                    <!-- 베스트 댓글을 표시하는 요소 -->
+                    <div id="commentBox">
+                        <p>베스트 댓글 내용</p>
+                    </div>
                 </div>
             </div>
+            
             
             <!-- 댓글 분석 원그래프 -->
             <div class="graphbox" id="commentAnalysis">
@@ -98,6 +101,6 @@
     <!-- Chart.js 라이브러리 스크립트 -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
     <!-- 분석 페이지 JavaScript 파일 링크 -->
-    <script type="module" src="static/analysis_script.js"></script>
+    <script type="module" src="../static/analysis_script.js"></script>
 </body>
 </html>

@@ -1,0 +1,76 @@
+from flask import Flask, request, render_template, jsonify
+import db
+import llm
+from Usecase import analysis_Usecase
+import asyncio
+
+app = Flask(__name__)
+
+
+@app.route('/')
+def hello():  # put application's code here
+    return render_template('index.html')
+
+
+@app.route('/analysis')
+def analysis():
+    comic_title = request.args.get('title', default='', type=str)
+
+    # analysis_Usecase(comic_title)
+
+    return render_template('analysis.html', title=comic_title)
+
+
+@app.route("/delete_webtoon", methods=['DELETE'])
+def delete_webtoon():
+    data = request.json
+    record_id = data.get('id')
+
+    result = db.delete_webtoon(record_id)
+    return jsonify({"success": True, "message": "delete 성공"})
+
+
+# 웹툰 목록
+@app.route("/webtoons")
+def webtoons():
+    records = db.get_webtoons()
+    return records
+
+
+# 웹툰 1개
+@app.route("/webtoon_one")
+def one_webtoon():
+    title = request.args.get('title')
+
+    result = db.get_one_webtoons(title)
+    return result
+
+
+@app.route("/webtoon_all")
+def all_webtoon():
+    result = db.get_all_webtoons()
+    return result
+
+
+@app.route("/new_webtoon", methods=['GET', 'POST'])
+def new_webtoon():
+    if request.method == 'POST':
+        data = request.json
+        title = data.get('title')
+        url = data.get('url')
+        if title and url:
+            result = db.create_webtoon(title, url)
+            return {"message": "Webtoon added successfully"}
+        else:
+            return {"error": "Title and URL are required fields"}, 400
+    else:
+        return {"error": "Method not allowed"}, 405
+
+@app.route('/ai')
+def ai_response():
+    response = llm.label_feedback('824261')
+    return {"response": response}
+
+
+if __name__ == '__main__':
+    app.run()
