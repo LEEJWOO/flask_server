@@ -5,7 +5,9 @@ import pickle
 import tensorflow as tf
 from konlpy.tag import Okt
 import numpy as np
+import torch
 
+device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 # 단어와 라벨의 사전 정의
 word_to_label = {
     '작화': 0, '그림체': 0, '선': 0, '채색': 0, '배경': 0, '디테일': 0, '색감': 0, '드로잉': 0, '일러스트': 0, '미국 그림체': 0,
@@ -16,7 +18,7 @@ word_to_label = {
 }
 
 # 불용어
-stop_words_path = 'F:/s/kit452_test/DATA/stopword.txt'  # stop_words 파일 경로 설정
+stop_words_path = 'C:/flask_server/DATA/stopword.txt'  # stop_words 파일 경로 설정
 with open(stop_words_path, 'r', encoding='utf-8') as f:
     stopwords = [word.strip() for word in f.readlines()]
 MAX_LENGTH = 20  # 문장최대길이
@@ -35,10 +37,10 @@ def remove_stopwords(text, stopwords):
 
 
 def load_model_and_tokenizer():
-    with open('F:/s/kit452_test/CLEAN_DATA_TOON/data_configs.json', 'r') as f:
+    with open('C:/flask_server/CLEAN_DATA_TOON/data_configs.json', 'r') as f:
         prepro_configs = json.load(f)
 
-    with open('F:/s/kit452_test/CLEAN_DATA_TOON/tokenizer.pickle', 'rb') as handle:
+    with open('C:/flask_server/CLEAN_DATA_TOON/tokenizer.pickle', 'rb') as handle:
         tokenizer = pickle.load(handle)
 
     if isinstance(prepro_configs['vocab'], dict):
@@ -47,7 +49,7 @@ def load_model_and_tokenizer():
     else:
         print("prepro_configs['vocab']는 사전 형태가 아닙니다. tokenizer.word_index 설정 실패.")
 
-    model = tf.keras.models.load_model('F:/s/kit452_test/my_toon_models/')
+    model = tf.keras.models.load_model('C:/flask_server/my_toon_models/')
 
     return model, tokenizer
 

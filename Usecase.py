@@ -30,7 +30,7 @@ def analysis_Usecase(tit):
     # 자연어 처리 모델 실행, 라벨링
     labeling_nlp(title_id, last_ep)
 
-    laebl_Update_Usecase(title_id, record_id)
+    label_Update_Usecase(title_id, record_id)
 
     # # AI 호출해서 라벨링 된 데이터에서 피드백 요약
     # total_feedback_usecase(record_id, record_id)
@@ -45,7 +45,7 @@ def analysis_Usecase(tit):
 #
 #     return total_feedback
 
-def laebl_Update_Usecase(title_id, record_id):
+def label_Update_Usecase(title_id, record_id):
     # 라벨
     label_names = {0: '작화', 1: '스토리', 2: '분량', 3: '기타'}
 
@@ -79,3 +79,4 @@ def laebl_Update_Usecase(title_id, record_id):
 
     return True
 
+analysis_Usecase('트리거')  # 임시 예시!

@@ -1,4 +1,4 @@
-Episode 95: 9.45
+Episode 95: 9.47
 Episode 94: 9.62
 Episode 93: 9.74
 Episode 92: 9.65
@@ -36,7 +36,7 @@ Episode 61: 9.82
 Episode 60: 9.83
 Episode 59: 9.79
 Episode 58: 9.81
-Episode 57: 9.82
+Episode 57: 9.83
 Episode 56: 9.87
 Episode 55: 9.86
 Episode 54: 9.89
@@ -59,7 +59,7 @@ Episode 38: 9.91
 Episode 37: 9.86
 Episode 36: 9.88
 Episode 35: 9.9
-Episode 34: 9.9
+Episode 34: 9.89
 Episode 33: 9.89
 Episode 32: 9.9
 Episode 31: 9.86

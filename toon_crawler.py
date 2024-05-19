@@ -11,18 +11,19 @@ import db
 def setup_driver():
     options = webdriver.ChromeOptions()
     options.add_argument("--headless")
-    driver = webdriver.Chrome(options=options)
+
     # User-Agent 값을 변경, 크롤링 방지 우회.
     options.add_argument(
         "user-agent=Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.100 Safari/537.36")
-    return webdriver.Chrome(options=options)
+    driver = webdriver.Chrome(options=options)
+    return driver
 
 
 def crawl_episode_comments(titleId, episode_number):
     driver = setup_driver()
     episode_url = f'https://comic.naver.com/webtoon/detail?titleId={titleId}&no={episode_number}'
     driver.get(episode_url)
-    wait = WebDriverWait(driver, 10)
+    wait = WebDriverWait(driver, 0.2)
 
     try:
         view_all_comments_button = wait.until(EC.element_to_be_clickable((By.CLASS_NAME, 'u_cbox_btn_view_comment')))
@@ -61,7 +62,7 @@ def comments_crawler(titleId, end_episode):
         comments.extend(episode_comments)
     return comments
 
-
+#TODO 아마 별점 크롤러
 def star_crawler(titleId):
     driver = setup_driver()
     ratings = []
@@ -71,7 +72,7 @@ def star_crawler(titleId):
         while True:
             base_url = f'https://comic.naver.com/webtoon/list?titleId={titleId}&page={page}&sort=DESC'
             driver.get(base_url)
-            time.sleep(0.02)
+            time.sleep(0.09)
 
             for i in range(1, 21):
                 try:

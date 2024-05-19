@@ -4,8 +4,9 @@ import json
 import pickle
 import tensorflow as tf
 from konlpy.tag import Okt
+import torch
 
-
+device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 def clean_text(text):
     text = re.sub(r'[^ㄱ-ㅎㅏ-ㅣ가-힣 ]', '', text)
     return text
@@ -19,10 +20,10 @@ def remove_stopwords(text, stopwords):
 
 
 def load_model_and_tokenizer():
-    with open('F:/s/kit452_test/CLEAN_DATA/data_configs.json', 'r') as f:
+    with open('C:/flask_server/CLEAN_DATA/data_configs.json', 'r') as f:
         prepro_configs = json.load(f)
 
-    with open('F:/s/kit452_test/CLEAN_DATA/tokenizer.pickle', 'rb') as handle:
+    with open('C:/flask_server/CLEAN_DATA/tokenizer.pickle', 'rb') as handle:
         tokenizer = pickle.load(handle)
 
     if isinstance(prepro_configs['vocab'], dict):
@@ -31,7 +32,7 @@ def load_model_and_tokenizer():
     else:
         print("prepro_configs['vocab']는 사전 형태가 아닙니다. tokenizer.word_index 설정 실패.")
 
-    model = tf.keras.models.load_model('F:/s/kit452_test/my_models/')
+    model = tf.keras.models.load_model('C:/flask_server/my_models/')
 
     return model, tokenizer
 

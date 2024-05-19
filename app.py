@@ -16,7 +16,7 @@ def hello():  # put application's code here
 def analysis():
     comic_title = request.args.get('title', default='', type=str)
 
-    # analysis_Usecase(comic_title)
+    analysis_Usecase(comic_title) #주석 해제 후 테스트 예정
 
     return render_template('analysis.html', title=comic_title)
 
@@ -70,7 +70,6 @@ def new_webtoon():
 def ai_response():
     response = llm.label_feedback('824261')
     return {"response": response}
-
 
 if __name__ == '__main__':
     app.run()
