@@ -81,8 +81,12 @@ function displayComicPopup() {
             console.error('Error:', error);
         });
 
+    // 취소 버튼에 클릭 이벤트 리스너 추가
+    document.getElementById("cancelComicBtn").addEventListener("click", function() {
         // 팝업 닫기
         document.body.removeChild(popupContainer);
+});
+
     });
 
     // 취소 버튼에 클릭 이벤트 리스너 추가

@@ -6,31 +6,36 @@ from selenium.common.exceptions import TimeoutException, NoSuchElementException
 import time
 import os
 import db
+import logging
+from concurrent.futures import ThreadPoolExecutor, as_completed
 
+# 로그 설정
+logging.basicConfig(filename='crawler.log', level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')  # 0521 수정 : 로그 설정 추가
 
 def setup_driver():
     options = webdriver.ChromeOptions()
     options.add_argument("--headless")
-
-    # User-Agent 값을 변경, 크롤링 방지 우회.
     options.add_argument(
         "user-agent=Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.100 Safari/537.36")
     driver = webdriver.Chrome(options=options)
     return driver
 
-
 def crawl_episode_comments(titleId, episode_number):
+    start_time = time.time()  # 0521 수정 : 시작 시간 기록
     driver = setup_driver()
     episode_url = f'https://comic.naver.com/webtoon/detail?titleId={titleId}&no={episode_number}'
     driver.get(episode_url)
-    wait = WebDriverWait(driver, 0.2)
+    wait = WebDriverWait(driver, 2)
+    setup_time = time.time() - start_time  # 0521 수정 : 드라이버 설정 시간 기록
 
     try:
         view_all_comments_button = wait.until(EC.element_to_be_clickable((By.CLASS_NAME, 'u_cbox_btn_view_comment')))
         view_all_comments_button.click()
     except TimeoutException:
+        logging.error(f"TimeoutException: View all comments button not found for {titleId} episode {episode_number}")  # 0521 수정 : 로그 기록 추가
         driver.quit()
         return []
+    comments_button_time = time.time() - start_time  # 0521 수정 : 댓글 버튼 클릭 시간 기록
 
     comments = []
     while True:
@@ -40,9 +45,12 @@ def crawl_episode_comments(titleId, episode_number):
         except TimeoutException:
             break
 
+    comments_loading_time = time.time() - start_time  # 0521 수정 : 더 보기 버튼 클릭 시간 기록
+
     page_comments = driver.find_elements(By.CLASS_NAME, 'u_cbox_contents')
     comments.extend([comment.text for comment in page_comments])
     driver.quit()
+    comments_extraction_time = time.time() - start_time  # 0521 수정 : 댓글 추출 시간 기록
 
     comments_folder = os.path.join(os.getcwd(), f'Webtoon_{titleId}')  # 폴더에 저장하는 코드
     os.makedirs(comments_folder, exist_ok=True)
@@ -50,20 +58,33 @@ def crawl_episode_comments(titleId, episode_number):
     with open(comment_filename, 'w', encoding='utf-8') as file:
         for comment in comments:
             file.write(comment + "\n")
+    save_time = time.time() - start_time  # 0521 수정 : 파일 저장 시간 기록
+
+    with open("time_log.txt", "a", encoding="utf-8") as log_file:  # 0521 수정 : 로그 파일에 기록 추가
+        log_file.write(f"Episode {episode_number} - Setup: {setup_time:.3f}s, Button: {comments_button_time:.3f}s, Loading: {comments_loading_time:.3f}s, Extraction: {comments_extraction_time:.3f}s, Save: {save_time:.3f}s\n")
 
     return comments
-
 
 def comments_crawler(titleId, end_episode):
+    logging.info(f"Starting comments crawling for titleId {titleId}")  # 0521 수정 : 로그 추가
     comments = []
-    start_episode = 1
-    for episode_number in range(start_episode, end_episode + 1):
-        episode_comments = crawl_episode_comments(titleId, episode_number)
-        comments.extend(episode_comments)
+
+    with ThreadPoolExecutor(max_workers=2) as executor:
+        future_to_episode = {executor.submit(crawl_episode_comments, titleId, episode_number): episode_number for episode_number in range(1, end_episode + 1)}
+        for future in as_completed(future_to_episode):
+            episode_number = future_to_episode[future]
+            try:
+                episode_comments = future.result()
+                if episode_comments:
+                    comments.extend(episode_comments)
+            except Exception as e:
+                logging.error(f"Error crawling comments for episode {episode_number} of titleId {titleId}: {e}")
+
+    logging.info(f"Comments crawling completed for titleId {titleId}")  # 0521 수정 : 로그 추가
     return comments
 
-#TODO 아마 별점 크롤러
 def star_crawler(titleId):
+    logging.info(f"Starting star crawling for titleId {titleId}")  # 0521 수정 : 로그 추가
     driver = setup_driver()
     ratings = []
     page = 1
@@ -72,7 +93,7 @@ def star_crawler(titleId):
         while True:
             base_url = f'https://comic.naver.com/webtoon/list?titleId={titleId}&page={page}&sort=DESC'
             driver.get(base_url)
-            time.sleep(0.09)
+            time.sleep(0.1)
 
             for i in range(1, 21):
                 try:
@@ -83,10 +104,11 @@ def star_crawler(titleId):
                                                       f'/html/body/div[1]/div/div[2]/div/div[1]/div[3]/ul/li[{i}]/a/div[2]/div/span[1]/span').text
                     ratings.append({'episode': int(episode_number), 'star': float(star_rating)})
                     last_episode = max(last_episode, int(episode_number))
-                except NoSuchElementException:
+                except NoSuchElementException:  # 오류 메시지 자주 발생하나 치명적 오류는 아님
+                    logging.error(f"NoSuchElementException: Element not found on page {page} for episode {i}")  # 0521 수정 : 로그 기록 추가
                     break
                 except Exception as e:
-                    print(f"Error fetching rating for episode {i} on page {page}: {str(e)}")
+                    logging.error(f"Error fetching rating for episode {i} on page {page}: {str(e)}")  # 0521 수정 : 로그 기록 추가
                     continue
             if len(ratings) < 20 * page:  # 별점 목록이 페이지당 20개 미만이면 마지막 페이지로 간주
                 break
@@ -102,4 +124,5 @@ def star_crawler(titleId):
             file.write(f"Episode {rating['episode']}: {rating['star']}\n")
 
     record_id = db.create_stars(ratings)
+    logging.info(f"Star crawling completed for titleId {titleId}")  # 0521 수정 : 로그 추가
     return record_id, last_episode

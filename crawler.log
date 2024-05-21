@@ -1,0 +1,18 @@
+2024-05-21 19:12:06,583 - INFO - HTTP Request: GET http://127.0.0.1:8090/api/collections/webtoons/records?expand=label%2Cstars%2Ctotal_count&page=1&perPage=100 "HTTP/1.1 200 OK"
+2024-05-21 19:12:06,586 - INFO - HTTP Request: GET http://127.0.0.1:8090/api/collections/webtoons/records/dhipdku07nf2r7r?expand=label%2Cstars%2Ctotal_count "HTTP/1.1 200 OK"
+2024-05-21 19:12:06,587 - INFO - 127.0.0.1 - - [21/May/2024 19:12:06] "GET /webtoon_one?title=ºÒÈ¿ÀÚ HTTP/1.1" 200 -
+2024-05-21 19:12:06,594 - INFO - Starting analysis for webtoon: ºÒÈ¿ÀÚ
+2024-05-21 19:12:06,596 - INFO - HTTP Request: GET http://127.0.0.1:8090/api/collections/webtoons/records?expand=label%2Cstars%2Ctotal_count&page=1&perPage=100 "HTTP/1.1 200 OK"
+2024-05-21 19:12:06,600 - INFO - HTTP Request: GET http://127.0.0.1:8090/api/collections/webtoons/records/dhipdku07nf2r7r?expand=label%2Cstars%2Ctotal_count "HTTP/1.1 200 OK"
+2024-05-21 19:12:06,600 - INFO - Crawling stars for titleId 823663
+2024-05-21 19:12:06,600 - INFO - Starting star crawling for titleId 823663
+2024-05-21 19:12:08,599 - ERROR - NoSuchElementException: Element not found on page 1 for episode 6
+2024-05-21 19:12:10,661 - INFO - HTTP Request: POST http://127.0.0.1:8090/api/collections/stars_webtoon/records "HTTP/1.1 200 OK"
+2024-05-21 19:12:10,662 - INFO - Star crawling completed for titleId 823663
+2024-05-21 19:12:14,764 - ERROR - Error during analysis for webtoon ºÒÈ¿ÀÚ: update_stars_webtoon() takes 2 positional arguments but 3 were given
+2024-05-21 19:12:14,769 - INFO - 127.0.0.1 - - [21/May/2024 19:12:14] "GET /analysis?title=ºÒÈ¿ÀÚ HTTP/1.1" 200 -
+2024-05-21 19:12:14,780 - INFO - 127.0.0.1 - - [21/May/2024 19:12:14] "[36mGET /static/analysis_styles.css HTTP/1.1[0m" 304 -
+2024-05-21 19:12:14,786 - INFO - 127.0.0.1 - - [21/May/2024 19:12:14] "[36mGET /static/analysis_script.js HTTP/1.1[0m" 304 -
+2024-05-21 19:12:14,804 - INFO - HTTP Request: GET http://127.0.0.1:8090/api/collections/webtoons/records?expand=label%2Cstars%2Ctotal_count&page=1&perPage=100 "HTTP/1.1 200 OK"
+2024-05-21 19:12:14,808 - INFO - HTTP Request: GET http://127.0.0.1:8090/api/collections/webtoons/records/dhipdku07nf2r7r?expand=label%2Cstars%2Ctotal_count "HTTP/1.1 200 OK"
+2024-05-21 19:12:14,808 - INFO - 127.0.0.1 - - [21/May/2024 19:12:14] "GET /webtoon_one?title=ºÒÈ¿ÀÚ HTTP/1.1" 200 -

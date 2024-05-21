@@ -1,4 +1,4 @@
-from flask import Flask, request, render_template, jsonify
+from flask import Flask, request, render_template, jsonify, send_file
 import db
 import llm
 from Usecase import analysis_Usecase
@@ -16,7 +16,7 @@ def hello():  # put application's code here
 def analysis():
     comic_title = request.args.get('title', default='', type=str)
 
-    analysis_Usecase(comic_title) #주석 해제 후 테스트 예정
+    analysis_Usecase(comic_title) #서버에서 동기 실행시 주석 제거할 부분
 
     return render_template('analysis.html', title=comic_title)
 
@@ -66,10 +66,11 @@ def new_webtoon():
     else:
         return {"error": "Method not allowed"}, 405
 
-@app.route('/ai')
-def ai_response():
-    response = llm.label_feedback('824261')
-    return {"response": response}
+@app.route('/get_emotion_data/<titleId>/<episodeNumber>')
+def get_emotion_data(titleId, episodeNumber):
+    filename = f'Webtoon_emotion_nlp_{titleId}/emotion_comments_{titleId}_{episodeNumber}.txt'
+    return send_file(filename, mimetype='text/plain')
+
 
 if __name__ == '__main__':
     app.run()

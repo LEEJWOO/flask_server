@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>웹툰 분석 페이지</title>
     <!-- 분석 페이지 CSS 링크 -->
+
     <link id="styleLink" rel="stylesheet" href="../static/analysis_styles.css">
     </head>
 <body>
@@ -27,12 +28,12 @@
                     <div id="starRatingBox">★★★★★</div>
                 </div>
             
-                <!-- 최신 회차의 베스트 댓글 -->
+                <!-- 최신 회차의 댓글 -->
                 <div class="box" id="bestComment">
-                    <h3>최신 회차의 베스트 댓글</h3>
-                    <!-- 베스트 댓글을 표시하는 요소 -->
+                    <h3>최신 회차의 댓글 반응</h3>
+                    <!-- 댓글을 표시하는 요소 -->
                     <div id="commentBox">
-                        <p>베스트 댓글 내용</p>
+                        <p>댓글 내용</p>
                     </div>
                 </div>
             </div>
@@ -100,6 +101,7 @@
     </main>
     <!-- Chart.js 라이브러리 스크립트 -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <!-- 분석 페이지 JavaScript 파일 링크 -->
     <script type="module" src="../static/analysis_script.js"></script>
 </body>

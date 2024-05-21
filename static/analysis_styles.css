@@ -94,10 +94,10 @@ h1#comicTitle {
     border-radius: 5px;
     padding: 10px;
     margin: 0 auto 20px;
-    text-align: center;
-    width: 1000px; /* 부모 요소의 90%만큼을 차지하도록 설정 */
+    width: 1000px;  /*부모 요소의 90%만큼을 차지하도록 설정  */
     box-sizing: border-box; 
-}
+} 
+
 
 #commentChart {
     width: 100%; /* 부모 요소에 맞게 채움 */
