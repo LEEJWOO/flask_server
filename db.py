@@ -41,6 +41,7 @@ def get_all_webtoons():
             for label_record in record.expand['label']:
                 label = {
                     "id": label_record.id,
+                    "label" : label_record.label,
                     "positive_count": label_record.positive_count,
                 }
                 labels.append(label)
@@ -100,6 +101,7 @@ def get_one_webtoons(tit):
         for label_record in record.expand['label']:
             label = {
                 "id": label_record.id,
+                "label" : label_record.label,
                 "positive_count": label_record.positive_count,
             }
             labels.append(label)
@@ -149,8 +151,6 @@ def create_webtoon(title, url):
 def delete_webtoon(id):
     # webtoons 콜렉션에서 특정 ID를 가진 레코드 가져오기
     record = pb.collection('webtoons').get_one(id)
-    print(record.__dict__)
-
     pb.collection('webtoons').delete(id)
 
     # stars가 None이 아니고, 빈 값이 아닌 경우
@@ -169,7 +169,9 @@ def delete_webtoon(id):
 
     return "delete 성공"
 
-
+def delete_stars(id):
+    pb.collection('stars_webtoon').delete(id)
+    return "delete 성공"
 
 def create_label(label, p_count):
     data = {
@@ -200,16 +202,15 @@ def update_label_webtoon(webtoon_id, label_ids):
         "label": label_ids
     }
     record = pb.collection('webtoons').update(webtoon_id, data)
-    print(record.__dict__)
     return record.label
 
 
-def update_stars_webtoon(webtoon_id, star_id):
+def update_stars_webtoon(webtoon_id, star_id, last_ep):
     data = {
         "stars": star_id,
+        "last_ep": last_ep
     }
     record = pb.collection('webtoons').update(webtoon_id, data)
-    print(record.__dict__)
     return record.stars
 
 
@@ -218,5 +219,12 @@ def update_count_webtoon(webtoon_id, count_id):
         "total_count": count_id,
     }
     record = pb.collection('webtoons').update(webtoon_id, data)
-    print(record.__dict__)
     return record.total_count
+
+def update_summary_webtoon(webtoon_id, label_summary, total_summary):
+    data = {
+        "label_summary": label_summary,
+        "total_summary": total_summary
+    }
+    record = pb.collection('webtoons').update(webtoon_id, data)
+    return record.__dict__

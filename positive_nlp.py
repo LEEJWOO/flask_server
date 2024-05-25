@@ -6,7 +6,7 @@ import tensorflow as tf
 from konlpy.tag import Okt
 import torch
 
-device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+# device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 def clean_text(text):
     text = re.sub(r'[^ㄱ-ㅎㅏ-ㅣ가-힣 ]', '', text)
     return text

@@ -1,18 +1,72 @@
-2024-05-21 19:12:06,583 - INFO - HTTP Request: GET http://127.0.0.1:8090/api/collections/webtoons/records?expand=label%2Cstars%2Ctotal_count&page=1&perPage=100 "HTTP/1.1 200 OK"
-2024-05-21 19:12:06,586 - INFO - HTTP Request: GET http://127.0.0.1:8090/api/collections/webtoons/records/dhipdku07nf2r7r?expand=label%2Cstars%2Ctotal_count "HTTP/1.1 200 OK"
-2024-05-21 19:12:06,587 - INFO - 127.0.0.1 - - [21/May/2024 19:12:06] "GET /webtoon_one?title=ºÒÈ¿ÀÚ HTTP/1.1" 200 -
-2024-05-21 19:12:06,594 - INFO - Starting analysis for webtoon: ºÒÈ¿ÀÚ
-2024-05-21 19:12:06,596 - INFO - HTTP Request: GET http://127.0.0.1:8090/api/collections/webtoons/records?expand=label%2Cstars%2Ctotal_count&page=1&perPage=100 "HTTP/1.1 200 OK"
-2024-05-21 19:12:06,600 - INFO - HTTP Request: GET http://127.0.0.1:8090/api/collections/webtoons/records/dhipdku07nf2r7r?expand=label%2Cstars%2Ctotal_count "HTTP/1.1 200 OK"
-2024-05-21 19:12:06,600 - INFO - Crawling stars for titleId 823663
-2024-05-21 19:12:06,600 - INFO - Starting star crawling for titleId 823663
-2024-05-21 19:12:08,599 - ERROR - NoSuchElementException: Element not found on page 1 for episode 6
-2024-05-21 19:12:10,661 - INFO - HTTP Request: POST http://127.0.0.1:8090/api/collections/stars_webtoon/records "HTTP/1.1 200 OK"
-2024-05-21 19:12:10,662 - INFO - Star crawling completed for titleId 823663
-2024-05-21 19:12:14,764 - ERROR - Error during analysis for webtoon ºÒÈ¿ÀÚ: update_stars_webtoon() takes 2 positional arguments but 3 were given
-2024-05-21 19:12:14,769 - INFO - 127.0.0.1 - - [21/May/2024 19:12:14] "GET /analysis?title=ºÒÈ¿ÀÚ HTTP/1.1" 200 -
-2024-05-21 19:12:14,780 - INFO - 127.0.0.1 - - [21/May/2024 19:12:14] "[36mGET /static/analysis_styles.css HTTP/1.1[0m" 304 -
-2024-05-21 19:12:14,786 - INFO - 127.0.0.1 - - [21/May/2024 19:12:14] "[36mGET /static/analysis_script.js HTTP/1.1[0m" 304 -
-2024-05-21 19:12:14,804 - INFO - HTTP Request: GET http://127.0.0.1:8090/api/collections/webtoons/records?expand=label%2Cstars%2Ctotal_count&page=1&perPage=100 "HTTP/1.1 200 OK"
-2024-05-21 19:12:14,808 - INFO - HTTP Request: GET http://127.0.0.1:8090/api/collections/webtoons/records/dhipdku07nf2r7r?expand=label%2Cstars%2Ctotal_count "HTTP/1.1 200 OK"
-2024-05-21 19:12:14,808 - INFO - 127.0.0.1 - - [21/May/2024 19:12:14] "GET /webtoon_one?title=ºÒÈ¿ÀÚ HTTP/1.1" 200 -
+2024-05-22 18:01:07,373 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2024-05-22 18:01:07,374 - INFO - [33mPress CTRL+C to quit[0m
+2024-05-22 18:01:30,462 - INFO - 127.0.0.1 - - [22/May/2024 18:01:30] "GET / HTTP/1.1" 200 -
+2024-05-22 18:01:32,317 - INFO - 127.0.0.1 - - [22/May/2024 18:01:32] "[36mGET /static/styles.css HTTP/1.1[0m" 304 -
+2024-05-22 18:01:32,341 - INFO - 127.0.0.1 - - [22/May/2024 18:01:32] "[36mGET /static/scripts.js HTTP/1.1[0m" 304 -
+2024-05-22 18:01:32,361 - INFO - HTTP Request: GET http://127.0.0.1:8090/api/collections/webtoons/records?page=1&perPage=200 "HTTP/1.1 200 OK"
+2024-05-22 18:01:32,365 - INFO - 127.0.0.1 - - [22/May/2024 18:01:32] "GET /webtoons HTTP/1.1" 200 -
+2024-05-22 18:01:34,517 - INFO - HTTP Request: GET http://127.0.0.1:8090/api/collections/webtoons/records?expand=label%2Cstars%2Ctotal_count&page=1&perPage=100 "HTTP/1.1 200 OK"
+2024-05-22 18:01:34,525 - INFO - HTTP Request: GET http://127.0.0.1:8090/api/collections/webtoons/records/v3ijwzkrffkqsf0?expand=label%2Cstars%2Ctotal_count "HTTP/1.1 200 OK"
+2024-05-22 18:01:34,527 - INFO - 127.0.0.1 - - [22/May/2024 18:01:34] "GET /webtoon_one?title=ÇÁ¸°Å°ÇÇ¾Æ HTTP/1.1" 200 -
+2024-05-22 18:01:34,557 - INFO - HTTP Request: GET http://127.0.0.1:8090/api/collections/webtoons/records?expand=label%2Cstars%2Ctotal_count&page=1&perPage=100 "HTTP/1.1 200 OK"
+2024-05-22 18:01:34,569 - INFO - HTTP Request: GET http://127.0.0.1:8090/api/collections/webtoons/records/v3ijwzkrffkqsf0?expand=label%2Cstars%2Ctotal_count "HTTP/1.1 200 OK"
+2024-05-22 18:01:34,572 - ERROR - Exception on /analysis [GET]
+Traceback (most recent call last):
+  File "C:\flask_server\venv\lib\site-packages\flask\app.py", line 1473, in wsgi_app
+    response = self.full_dispatch_request()
+  File "C:\flask_server\venv\lib\site-packages\flask\app.py", line 882, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "C:\flask_server\venv\lib\site-packages\flask\app.py", line 880, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "C:\flask_server\venv\lib\site-packages\flask\app.py", line 865, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+  File "C:\flask_server\app.py", line 17, in analysis
+    analysis_Usecase(comic_title)
+  File "C:\flask_server\Usecase.py", line 37, in analysis_Usecase
+    total_feedback(title_id, record_id)
+  File "C:\flask_server\llm.py", line 67, in total_feedback
+    label_summary = label_feedback(title_id)
+  File "C:\flask_server\llm.py", line 50, in label_feedback
+    selected_comments = load_and_prepare_data(title_id)
+  File "C:\flask_server\llm.py", line 32, in load_and_prepare_data
+    with open(f'Webtoon_label_nlp/label_comments_{title_id}.txt', 'r', encoding='utf-8') as file:
+FileNotFoundError: [Errno 2] No such file or directory: 'Webtoon_label_nlp/label_comments_814407.txt'
+2024-05-22 18:01:34,575 - INFO - 127.0.0.1 - - [22/May/2024 18:01:34] "[35m[1mGET /analysis?title=ÇÁ¸°Å°ÇÇ¾Æ HTTP/1.1[0m" 500 -
+2024-05-22 18:01:46,136 - INFO - HTTP Request: GET http://127.0.0.1:8090/api/collections/webtoons/records?expand=label%2Cstars%2Ctotal_count&page=1&perPage=100 "HTTP/1.1 200 OK"
+2024-05-22 18:01:46,146 - INFO - HTTP Request: GET http://127.0.0.1:8090/api/collections/webtoons/records/v3ijwzkrffkqsf0?expand=label%2Cstars%2Ctotal_count "HTTP/1.1 200 OK"
+2024-05-22 18:01:46,148 - ERROR - Exception on /analysis [GET]
+Traceback (most recent call last):
+  File "C:\flask_server\venv\lib\site-packages\flask\app.py", line 1473, in wsgi_app
+    response = self.full_dispatch_request()
+  File "C:\flask_server\venv\lib\site-packages\flask\app.py", line 882, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "C:\flask_server\venv\lib\site-packages\flask\app.py", line 880, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "C:\flask_server\venv\lib\site-packages\flask\app.py", line 865, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+  File "C:\flask_server\app.py", line 17, in analysis
+    analysis_Usecase(comic_title)
+  File "C:\flask_server\Usecase.py", line 37, in analysis_Usecase
+    total_feedback(title_id, record_id)
+  File "C:\flask_server\llm.py", line 67, in total_feedback
+    label_summary = label_feedback(title_id)
+  File "C:\flask_server\llm.py", line 50, in label_feedback
+    selected_comments = load_and_prepare_data(title_id)
+  File "C:\flask_server\llm.py", line 32, in load_and_prepare_data
+    with open(f'Webtoon_label_nlp/label_comments_{title_id}.txt', 'r', encoding='utf-8') as file:
+FileNotFoundError: [Errno 2] No such file or directory: 'Webtoon_label_nlp/label_comments_814407.txt'
+2024-05-22 18:01:46,149 - INFO - 127.0.0.1 - - [22/May/2024 18:01:46] "[35m[1mGET /analysis?title=ÇÁ¸°Å°ÇÇ¾Æ HTTP/1.1[0m" 500 -
+2024-05-22 18:42:15,773 - INFO - 127.0.0.1 - - [22/May/2024 18:42:15] "GET / HTTP/1.1" 200 -
+2024-05-22 18:42:15,792 - INFO - 127.0.0.1 - - [22/May/2024 18:42:15] "[36mGET /static/styles.css HTTP/1.1[0m" 304 -
+2024-05-22 18:42:15,794 - INFO - 127.0.0.1 - - [22/May/2024 18:42:15] "[36mGET /static/scripts.js HTTP/1.1[0m" 304 -
+2024-05-22 18:42:15,818 - INFO - HTTP Request: GET http://127.0.0.1:8090/api/collections/webtoons/records?page=1&perPage=200 "HTTP/1.1 200 OK"
+2024-05-22 18:42:15,821 - INFO - 127.0.0.1 - - [22/May/2024 18:42:15] "GET /webtoons HTTP/1.1" 200 -
+2024-05-22 18:42:18,749 - INFO - 127.0.0.1 - - [22/May/2024 18:42:18] "GET / HTTP/1.1" 200 -
+2024-05-22 18:42:18,760 - INFO - 127.0.0.1 - - [22/May/2024 18:42:18] "[36mGET /static/styles.css HTTP/1.1[0m" 304 -
+2024-05-22 18:42:18,762 - INFO - 127.0.0.1 - - [22/May/2024 18:42:18] "[36mGET /static/scripts.js HTTP/1.1[0m" 304 -
+2024-05-22 18:42:18,771 - INFO - HTTP Request: GET http://127.0.0.1:8090/api/collections/webtoons/records?page=1&perPage=200 "HTTP/1.1 200 OK"
+2024-05-22 18:42:18,773 - INFO - 127.0.0.1 - - [22/May/2024 18:42:18] "GET /webtoons HTTP/1.1" 200 -
+2024-05-22 18:45:09,303 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2024-05-22 18:45:09,303 - INFO - [33mPress CTRL+C to quit[0m

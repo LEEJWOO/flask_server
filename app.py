@@ -1,8 +1,6 @@
 from flask import Flask, request, render_template, jsonify, send_file
 import db
-import llm
 from Usecase import analysis_Usecase
-import asyncio
 
 app = Flask(__name__)
 
@@ -16,7 +14,7 @@ def hello():  # put application's code here
 def analysis():
     comic_title = request.args.get('title', default='', type=str)
 
-    analysis_Usecase(comic_title) #서버에서 동기 실행시 주석 제거할 부분
+    analysis_Usecase(comic_title)
 
     return render_template('analysis.html', title=comic_title)
 
@@ -26,7 +24,7 @@ def delete_webtoon():
     data = request.json
     record_id = data.get('id')
 
-    result = db.delete_webtoon(record_id)
+    db.delete_webtoon(record_id)
     return jsonify({"success": True, "message": "delete 성공"})
 
 

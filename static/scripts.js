@@ -5,6 +5,12 @@ document.addEventListener("DOMContentLoaded", function() {
     // 웹툰 추가 버튼에 클릭 이벤트 리스너 추가
     var addComicBtn = document.getElementById("addComicBtn");
     if (addComicBtn) {
+        addComicBtn.style.fontSize = "1.2em"; // 버튼 글자 크기 조정
+        addComicBtn.style.width = "100px"; // 버튼 너비 조정
+        addComicBtn.style.height = "50px"; // 버튼 높이 조정
+        addComicBtn.style.backgroundColor = "#32CD32"; // 버튼 배경색을 밝은 녹색으로 변경
+        addComicBtn.style.color = "white"; // 버튼 글자 색을 흰색으로 변경
+        addComicBtn.style.borderRadius = "5px"; // 버튼 모서리 라운딩 추가
         addComicBtn.addEventListener("click", function() {
             displayComicPopup();
         });
@@ -40,13 +46,15 @@ function displayComicPopup() {
 
     // 팝업 내용 구성
     popupContent.innerHTML = `
-        <h2>웹툰 추가</h2>
-        <label for="comicTitle">제목:</label>
-        <input type="text" id="comicTitle" name="comicTitle" required><br><br>
-        <label for="comicURL">URL:</label>
-        <input type="url" id="comicURL" name="comicURL" required><br><br>
-        <button id="submitComicBtn">추가</button>
-        <button id="cancelComicBtn">취소</button>
+        <h2 style="text-align: center;">웹툰 추가</h2>
+        <label for="comicTitle" style="font-size: 1.2em;">제목:</label>
+        <input type="text" id="comicTitle" name="comicTitle" required style="width: 300px; height: 24px; font-size: 1.2em;"><br><br>
+        <label for="comicURL" style="font-size: 1.2em;">URL:</label>
+        <input type="url" id="comicURL" name="comicURL" required style="width: 300px; height: 24px; font-size: 1.2em;"><br><br>
+        <div style="text-align: right;">
+            <button id="cancelComicBtn" style="font-size: 1.2em; margin-right: 20px; background-color: red; color: white; border-radius: 5px;">취소</button>
+            <button id="submitComicBtn" style="font-size: 1.2em; background-color: #32CD32; color: white; border-radius: 5px;">추가</button>
+        </div>
     `;
 
     // 팝업에 내용 추가
@@ -81,12 +89,11 @@ function displayComicPopup() {
             console.error('Error:', error);
         });
 
-    // 취소 버튼에 클릭 이벤트 리스너 추가
-    document.getElementById("cancelComicBtn").addEventListener("click", function() {
-        // 팝업 닫기
-        document.body.removeChild(popupContainer);
-});
-
+        // 취소 버튼에 클릭 이벤트 리스너 추가
+        document.getElementById("cancelComicBtn").addEventListener("click", function() {
+            // 팝업 닫기
+            document.body.removeChild(popupContainer);
+        });
     });
 
     // 취소 버튼에 클릭 이벤트 리스너 추가
@@ -109,6 +116,7 @@ function createComicBox(comicTitle, webtoonId) {
     var titleLink = document.createElement("a");
     titleLink.textContent = comicTitle;
     titleLink.href = "#"; // 클릭 시 페이지 이동하지 않고 기본 동작 실행
+    titleLink.style.fontSize = "1.2em"; // 웹툰 제목 글자 크기 조정
 
     // 클릭 시 분석 페이지로 이동
     titleLink.addEventListener("click", function(event) {
@@ -130,6 +138,7 @@ function createComicBox(comicTitle, webtoonId) {
     var deleteButton = document.createElement("button");
     deleteButton.textContent = "삭제";
     deleteButton.classList.add("delete-btn");
+    deleteButton.style.fontSize = "1.2em"; // 삭제 버튼 글자 크기 조정
 
     // 삭제 버튼에 클릭 이벤트 리스너 추가
     deleteButton.addEventListener("click", function() {

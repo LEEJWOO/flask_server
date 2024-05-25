@@ -59,7 +59,6 @@ pillow==10.3.0
 pip==24.0
 pocketbase==0.10.1
 proto-plus==1.23.0
-protobuf==3.19.6
 py-mon==2.0.5
 pyasn1==0.6.0
 pyasn1_modules==0.4.0

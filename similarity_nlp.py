@@ -1,6 +1,7 @@
 from sentence_transformers import SentenceTransformer, util
 import torch
 import os
+from concurrent.futures import ProcessPoolExecutor
 
 # Sentence BERT 모델 로드
 embedder = SentenceTransformer("jhgan/ko-sroberta-multitask")
@@ -88,6 +89,8 @@ def process_total_comments(titleID):
     print(f"최종 파일 처리 완료, 처리된 문장 수: {len(final_cleaned_corpus)}")
 
 def similarity_nlp(titleID, lastep):
-    for episode in range(1, lastep + 1):
-        process_episode_comments(titleID, episode)
-
+    with ProcessPoolExecutor(max_workers=2) as executor:
+        futures = [executor.submit(process_episode_comments, titleID, episode) for episode in range(1, lastep + 1)]
+        for future in futures:
+            future.result()
+    return True
